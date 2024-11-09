@@ -21,3 +21,4 @@ Necesitamos feedback para terminar de diseñar la interfaz y poder avanzar con e
 - Y más.
 
 ## Caracteristicas
+JIJI
