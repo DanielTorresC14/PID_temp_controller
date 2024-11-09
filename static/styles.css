@@ -1,0 +1,82 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1c1c1c;
+    color: #d3d3d3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 1em;
+}
+
+img {
+    padding: 0em;
+    max-width: 100%;
+    height: auto;
+}
+
+.container {
+    max-width: 30em;
+    width: 100%;
+    border: 2px solid #666;
+    padding: 1em;
+    background-color: #2b2b2b;
+    border-radius: 1em;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.header {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.plot-section, .variables-section {
+    border: 1px solid #555;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.plot-section {
+    height: auto;
+    width: auto;
+}
+
+.slider-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.temperature-section {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.temperature-section p {
+    text-align: center;
+}
+
+.temperature-section div {
+    border: 1px solid #555;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.variables-section div {
+    display: flex;
+    padding: .4em;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.additional {
+    border: 1px solid #555;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 20px;
+}
