@@ -19,7 +19,3 @@ Necesitamos feedback para terminar de diseñar la interfaz y poder avanzar con e
 - Peticiones Cliente-Servidor.
 - Actualización en tiempo real de los datos recibidos.
 - Y más.
-
-## Caracteristicas
-
-tatatatatatatata
