@@ -9,43 +9,37 @@
 </head>
 <body>
     <div class="container">
-        <div class="content">
-            <div class="header">PID Temperature Controler</div>
+        <div class="header">PID Temperature Controller</div>
 
-            <div class="plot-section">
-                <img id="plot" src="/plot" alt="plot">
-            </div>
-            
+        <div class="plot-section">
+            <img id="plot" src="/plot" alt="plot">
+        </div>
 
-            <div class="temperature-section">
-                <section>
-                    <h4>Currtent Values</h4>
-                    <div>
-                        <section style="display: flex; flex-direction: column;">
-                            <p>Current Temp:</p> <p>30°C</p>
-                        </section> <br>
-                        <section class="temperature-section">
-                            Current Time: <b></b> 
-                        </section>
-                    </div>
-                </section>
-                <section>
-                    <h4>Maximum Values</h4>
-                    <div>Min Temp: <p id="min_temp"></p> <br> Max Temp: <b></b> </div>
-                </section>
-            </div>
+        <div class="temperature-section">
+            <section class="current-values">
+                <h4>Current Values</h4>
+                <div class="value-box">
+                    <p>Current Temp: <span>30°C</span></p>
+                    <p>Current Time: <span>120 s</span></p>
+                </div>
+            </section>
+            <section class="maximum-values">
+                <h4>Maximum Values</h4>
+                <div class="value-box">
+                    <p>Min Temp: <span id="min_temp">30°C</span></p>
+                    <p>Max Temp: <span>65°C</span></p>
+                </div>
+            </section>
+        </div>
 
-            
-            <div class="slider-section">
-                <h3>Target Temperature</h3>
-                <section>
-                    <p>Tmin:</p>
-                    <input type="range" min="0" max="100" value="46">
-                    <p>Tmax:</p>
-                </section>
-                <p>Tobj</p>
-                <div class="variables-section">40°C</div>
+        <div class="slider-section">
+            <h3>Target Temperature</h3>
+            <div class="slider-controls">
+                <label for="tmin">Tmin:</label>
+                <input type="range" id="tmin" min="0" max="100" value="30">
+                <label for="tmax">Tmax:</label>
             </div>
+            <p>Tobj = <span>40°C</span></p>
         </div>
     </div>
 </body>
