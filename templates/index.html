@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Propuesta 4 - APP</title>
     <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/interface.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -12,37 +13,39 @@
             <div class="header">PID Temperature Controler</div>
 
             <div class="plot-section">
-                <img src="/plot" alt="plot">
+                <img id="plot" src="/plot" alt="plot">
             </div>
-
-            <div class="slider-section">
-                <p>Temp Obj:</p> <br>
-                <input type="range" min="0" max="100" value="46">
-                <span>46 °C</span>
-            </div>
+            
 
             <div class="temperature-section">
-                <div>
-                    Min Temp <br>
-                    <p>30 °C</p>
-                </div>
-                <div>
-                    Temp Now <br>
-                    <p>34 °C</p>
-                </div>
-                <div>Max Temp <br>
-                    <p>46 °C</p>
-                </div>
+                <section>
+                    <h4>Currtent Values</h4>
+                    <div>
+                        <section style="display: flex; flex-direction: column;">
+                            <p>Current Temp:</p> <p>30°C</p>
+                        </section> <br>
+                        <section class="temperature-section">
+                            Current Time: <b></b> 
+                        </section>
+                    </div>
+                </section>
+                <section>
+                    <h4>Maximum Values</h4>
+                    <div>Min Temp: <p id="min_temp"></p> <br> Max Temp: <b></b> </div>
+                </section>
             </div>
 
-            <div class="variables-section">
-                <h3>Variables</h3>
-                <div>Temperatura máxima alcanzada: <span>51 °C</span></div>
-                <div>Temperatura promedio total: <span>38 °C</span></div>
-                <div>Temperatura mínima registrada: <span>26 °C</span></div>
+            
+            <div class="slider-section">
+                <h3>Target Temperature</h3>
+                <section>
+                    <p>Tmin:</p>
+                    <input type="range" min="0" max="100" value="46">
+                    <p>Tmax:</p>
+                </section>
+                <p>Tobj</p>
+                <div class="variables-section">40°C</div>
             </div>
-
-            <div class="additional">Más cosas aquí</div>
         </div>
     </div>
 </body>

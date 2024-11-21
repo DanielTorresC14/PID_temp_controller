@@ -33,6 +33,7 @@ img {
 
 .plot-section, .variables-section {
     border: 1px solid #555;
+    padding: 10px;
     border-radius: 10px;
     margin-bottom: 20px;
     text-align: center;
@@ -45,9 +46,22 @@ img {
 
 .slider-section {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-bottom: 10px;
+}
+
+.slider-section section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.slider-section p {
+    padding: 8px;
+    margin: 0;
 }
 
 .temperature-section {
@@ -56,14 +70,18 @@ img {
     margin-bottom: 20px;
 }
 
-.temperature-section p {
+.temperature-section section {
+    display: flex;
+    flex-direction: column;
     text-align: center;
 }
 
-.temperature-section div {
+.temperature-section section div {
     border: 1px solid #555;
     padding: 10px;
     border-radius: 5px;
+    display: flex;
+    flex-direction: column;
 }
 
 .variables-section div {

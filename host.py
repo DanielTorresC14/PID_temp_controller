@@ -1,3 +1,4 @@
+import json
 from flask import Flask, render_template
 import flask
 import matplotlib.pyplot as plt
@@ -12,7 +13,7 @@ app = Flask(__name__)
 # MAIN ROUTE
 @app.route("/")
 def home():
-    crear_grafica_temperatura() # TODO remove later.
+    generar_grafica() # TODO remove later.
     return render_template("index.html")
 
 
@@ -24,33 +25,69 @@ def get_plot ():
 
 
 
+@app.route("/send", methods=["POST"])
+def get_data ():
+    data = flask.request.json
+
+    with open("data/data.json", "r") as file:
+        localdata = json.load(file)
+
+    with open("data/data.json", "w") as file:
+        localdata["temp"] = data["temp"] + localdata["temp"]
+        localdata["time"] = data["time"] + localdata["time"]
+        print(localdata)
+        json.dump(localdata, file)
+
+    generar_grafica()
+
+    return flask.make_response(), 200
+
+
+
 # TODO remove this method later.
-def crear_grafica_temperatura():
-    """Esta funcion crea la gráfica, pero se espera recibir de otro módulo.
-    Además, idealmente debería estar optimizada para mostrarse en espacios
-    pequños poruqe las gráficas por defecto desperdician mucho espacio para los
-    bordes y cosas así.
-    Este código que creó Chatgpt cumple con esta caraterística.
-    """
-
-    t = np.linspace(0, 20, 200)
-    temperatura = np.exp(0.1 * t) * np.sin(0.5 * t)
-    fig, ax = plt.subplots(figsize=(5, 4))
-    ax.plot(t, temperatura, label="Temperatura (°C)", color='#FF6347')
-    ax.set_title("Temperatura", fontsize=10, color='#FFFFFF')
-    ax.set_xlabel("Tiempo (segundos)", fontsize=8, color='#FFFFFF')
-    ax.set_ylabel("Temperatura (°C)", fontsize=8, color='#FFFFFF')
-    ax.legend(fontsize=8, facecolor='white', edgecolor='white')
-    ax.spines['top'].set_color('#FFFFFF')
-    ax.spines['right'].set_color('#FFFFFF')
-    ax.spines['left'].set_color('#FFFFFF')
-    ax.spines['bottom'].set_color('#FFFFFF')
-    ax.xaxis.set_tick_params(colors='#FFFFFF')
-    ax.yaxis.set_tick_params(colors='#FFFFFF')
-    ax.grid(True, color='#FFFFFF', linestyle='-', linewidth=0.5)
-    plt.subplots_adjust(left=0.15, right=0.95, top=0.85, bottom=0.15)
-    plt.savefig("plot.svg", format="svg", dpi=300, bbox_inches='tight', transparent=True)
-
+def generar_grafica():
+    try:
+        # Leer los datos del archivo JSON
+        with open("data/data.json", "r") as file:
+            datos = json.load(file)
+        
+        # Extraer los ejes x (time) y y (temp)
+        tiempo = np.array(datos["time"])  # Eje x
+        temperatura = np.array(datos["temp"])  # Eje y
+        
+        # Crear la gráfica
+        fig, ax = plt.subplots(figsize=(5, 4))
+        ax.plot(tiempo, temperatura, label="Temperatura (°C)", color='#FF6347')
+        
+        # Personalización de la gráfica
+        ax.set_title("Temperatura en el tiempo", fontsize=10, color='#FFFFFF')
+        ax.set_xlabel("Tiempo (segundos)", fontsize=8, color='#FFFFFF')
+        ax.set_ylabel("Temperatura (°C)", fontsize=8, color='#FFFFFF')
+        ax.legend(fontsize=8, facecolor='white', edgecolor='white')
+        
+        # Ajustar los colores de los bordes y ticks
+        for spine in ax.spines.values():
+            spine.set_color('#FFFFFF')
+        ax.xaxis.set_tick_params(colors='#FFFFFF')
+        ax.yaxis.set_tick_params(colors='#FFFFFF')
+        
+        # Agregar una cuadrícula
+        ax.grid(True, color='#FFFFFF', linestyle='-', linewidth=0.5)
+        
+        # Ajustar márgenes de la gráfica
+        plt.subplots_adjust(left=0.15, right=0.95, top=0.85, bottom=0.15)
+        
+        # Guardar la gráfica como un archivo SVG
+        plt.savefig("plot.svg", format="svg", dpi=300, bbox_inches='tight', transparent=True)
+        print("Gráfica generada y guardada como 'plot.svg'.")
+    except FileNotFoundError:
+        print("Error: El archivo 'data/data.json' no se encuentra.")
+    except KeyError as e:
+        print(f"Error: La clave '{e.args[0]}' no existe en el archivo JSON.")
+    except json.JSONDecodeError:
+        print("Error: El archivo JSON tiene un formato inválido.")
+    except Exception as e:
+        print(f"Error inesperado: {e}")
 
 
 # Iniciar servidor
