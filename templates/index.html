@@ -19,15 +19,15 @@
             <section class="current-values">
                 <h4>Current Values</h4>
                 <div class="value-box">
-                    <p>Current Temp: <span>30°C</span></p>
-                    <p>Current Time: <span>120 s</span></p>
+                    <p>Current Temp: <span id="current_temp">30°C</span></p>
+                    <p>Current Time: <span id="current_time">120 s</span></p>
                 </div>
             </section>
             <section class="maximum-values">
                 <h4>Maximum Values</h4>
                 <div class="value-box">
                     <p>Min Temp: <span id="min_temp">30°C</span></p>
-                    <p>Max Temp: <span>65°C</span></p>
+                    <p>Max Temp: <span id="max_temp">65°C</span></p>
                 </div>
             </section>
         </div>
@@ -40,7 +40,7 @@
                 <input type="range" id="range" min="15" max="65" value="15">
                 <label for="tmax">Tmax:</label>
             </div>
-            <p>Tobj = <span>40°C</span></p>
+            <p>Tobj = <span id="target_temp">40°C</span></p>
         </div>
     </div>
 </body>

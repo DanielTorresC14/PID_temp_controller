@@ -1,6 +1,1 @@
-{
-    "intensity": 0,
-    "min_temp": 0,
-    "max_temp": 0,
-    "currentTime": 0
-}
+{"intensity": 0, "min_temp": "23.0625", "max_temp": 65, "currentTime": 76, "targetTemp": 42}

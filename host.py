@@ -24,15 +24,39 @@ app = Flask(__name__)
 # MAIN ROUTE
 @app.route("/")
 def home():
-    generar_grafica() # TODO remove later.
+    generar_grafica()
     return render_template("index.html")
 
 
 
-# TODO remove this route later.
 @app.route("/plot")
 def get_plot ():
-    return flask.send_file("plot.svg", mimetype='image/svg+xml')
+    return flask.send_file("plot.svg", mimetype="image/svg+xml")
+
+
+
+@app.route("/current_values", methods=["GET"])
+def current_values():
+    with open("json_files/data.json", "r") as file:
+        values = json.load(file)
+    return flask.make_response(values), 200
+
+
+
+@app.route("/new_setpoint", methods=["GET"])
+def new_setpoint ():
+    global setpoint
+    value = flask.request.args.get("setpoint")
+    setpoint = value
+
+    with open("json_files/data.json") as file:
+        values = json.load(file)
+        values["targetTemp"] = int(setpoint)
+
+    with open("json_files/data.json", "w") as file:
+        json.dump(values, file, indent=4)
+
+    return flask.make_response({"message": "Success!"}), 200
 
 
 
@@ -46,9 +70,14 @@ def get_data ():
             write = csv.writer(f)
             write.writerow([data['temp'], data['brightness']])
         generar_grafica()
-        return jsonify({'setpoint': setpoint}), 200
+        return jsonify({
+            'setpoint': setpoint,
+            "response": "Data recived successfully! :D"
+            }), 200
     print("No se enviaron datos o el formato no es JSON")
     return jsonify({'error': 'No se enviaron datos'}), 400
+
+
 
 # TODO remove this method later.
 def generar_grafica():
@@ -79,6 +108,21 @@ def generar_grafica():
         print("Error: El archivo JSON tiene un formato inválido.")
     except Exception as e:
         print(f"Error inesperado: {e}")
+
+
+
+def refresh_values ():
+    with open("json_files/data.json") as file:
+        values = json.load(file)
+        with open("csv_files/csv_data.csv") as file:
+            reader = csv.reader(file)
+            header = next(reader)
+            values["min_temp"] = next(reader)[0]
+            values["currentTime"] = len([row for row in reader]) + 1
+            
+    with open("json_files/data.json", "w") as file:
+        json.dump(values, file)
+
 
 
 # Iniciar servidor
