@@ -82,30 +82,42 @@ def get_data ():
 # TODO remove this method later.
 def generar_grafica():
     try:
-        # Leer los datos del archivo JSON
-        with open("data/data.json", "r") as file:
-            datos = json.load(file)
+        # Leer los datos del archivo JSON.
+        with open(filename) as f:
+            reader = csv.reader(f)
+            header_row = next(reader)
+            temps = np.array([])
+            brightness = np.array([])
+            for row in reader:
+                temps = np.append(temps, float(row[0]))
+                brightness = np.append(brightness, float(row[1]))
+        times = np.arange(0, len(temps))
         
-        # Extraer los ejes x (time) y y (temp)
-        tiempo = np.arange(0, len(datos["temp"]))  # Eje x
-        temperatura = np.array(datos["temp"])  # Eje y
-        
-        # Crear la gráfica
+        # Crear la gráfica.
         fig, ax = plt.subplots(figsize=(5, 4))
-        ax.plot(tiempo, temperatura, label="Temperatura (°C)", color='#FF6347')
-        
-        # Ajustar márgenes de la gráfica
+        ax.plot(times, temps, lw=0.75, label='Real Data', c='#00ffff')
+        ax.set_title("Response", c='white')
+        ax.set_xlabel("Time t (seg)", c='white')
+        ax.set_ylabel("Temperature T (°C)", c='white')
+
+        ax.grid(True, c='#757575', lw=0.5)
+        ax.tick_params(colors='white')
+        ax.spines['bottom'].set_color('white')
+        ax.spines['left'].set_color('white')
+        ax.spines['top'].set_color('white')
+        ax.spines['right'].set_color('white')
+        plt.legend(loc='lower right')
+
+        # Ajustar márgenes de la gráfica.
         plt.subplots_adjust(left=0.15, right=0.95, top=0.85, bottom=0.15)
         
-        # Guardar la gráfica como un archivo SVG
+        # Guardar la gráfica como un archivo SVG.
         plt.savefig("plot.svg", format="svg", dpi=300, bbox_inches='tight', transparent=True)
         print("Gráfica generada y guardada como 'plot.svg'.")
+    
+    # Posibles Excepciones.
     except FileNotFoundError:
         print("Error: El archivo 'data/data.json' no se encuentra.")
-    except KeyError as e:
-        print(f"Error: La clave '{e.args[0]}' no existe en el archivo JSON.")
-    except json.JSONDecodeError:
-        print("Error: El archivo JSON tiene un formato inválido.")
     except Exception as e:
         print(f"Error inesperado: {e}")
 
