@@ -1,16 +1,25 @@
 import json
-from flask import Flask, render_template
+import csv
 import flask
 import matplotlib.pyplot as plt
 import numpy as np
 
+from flask import Flask, request, render_template, jsonify
 
+# Contiene los datos para graficar
+filename = "csv_files/csv_data.csv"
+
+# Crea el archivo csv si no existe.
+try:
+    with open(filename, 'x', newline='') as f:
+        write = csv.writer(f)
+        write.writerow(['Temperature', 'Brightness'])
+except FileExistsError:
+    pass
 
 current_temp = 0
 setpoint = 0
 app = Flask(__name__)
-
-
 
 # MAIN ROUTE
 @app.route("/")
@@ -27,29 +36,19 @@ def get_plot ():
 
 
 
-@app.route("/send", methods=["POST"])
+@app.route("/data", methods=["POST"])
 def get_data ():
     global setpoint
-    data = flask.request.json
-
-    temp = data["current_temp"]
-    intensity = data["current_intensity"]
-
-    with open("data/data.json", "r") as file:
-        localdata = json.load(file)
-
-    with open("data/data.json", "w") as file:
-        localdata["temp"] = temp + localdata["temp"]
-        localdata["current_intensity"] = intensity
-        json.dump(localdata, file)
-
-    generar_grafica()
-
-    return flask.make_response({
-        "setpoint" : setpoint
-    }), 200
-
-
+    data = request.get_json()
+    if data:
+        print("Datos recibidos:", data)
+        with open(filename, 'a', newline='') as f:
+            write = csv.writer(f)
+            write.writerow([data['temp'], data['brightness']])
+        generar_grafica()
+        return jsonify({'setpoint': setpoint}), 200
+    print("No se enviaron datos o el formato no es JSON")
+    return jsonify({'error': 'No se enviaron datos'}), 400
 
 # TODO remove this method later.
 def generar_grafica():
@@ -84,4 +83,4 @@ def generar_grafica():
 
 # Iniciar servidor
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=8080)
