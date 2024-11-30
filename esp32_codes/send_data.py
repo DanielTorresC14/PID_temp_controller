@@ -41,7 +41,8 @@ while True:
         
         # Manda informacion al servidor.
         response = urequests.post(url, json=data)
-        print("Respuesta del servidor:", response.json()['setpoint'])
+        pid.setpoint = response.json()['setpoint']
+        print("Server response: " + response.json()['response'])
         response.close()
         
         # Intervalo fijo para actualizar el PID
